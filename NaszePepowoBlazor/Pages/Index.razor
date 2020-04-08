@@ -1,7 +1,47 @@
-﻿@page "/"
+﻿@using BlazorBloggerApi3.Models.Result
+@using BlazorBloggerApi3.Models.Request
+@using BlazorBloggerApi3.Services
+@inject HttpClient httpClient
+@page "/"
 
-<h1>Hello, world!</h1>
+<button @onclick="GetServerResponse">Działaj!</button>
+<h1>Poniżej pojawi się status naciśnięciu przycisku</h1>
 
-Welcome to your new app.
+<h4>Status synchronizacji: @synchronized</h4>
+@if (synchronized)
+{
+    foreach (var post in Posts)
+    {
+        <hr />
+        <h1>@post.title</h1>
+        <p>
+            @if (post.content.Contains("<img")) 
+            @((MarkupString) post.content)
+        </p>
+    }
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+
+@code {
+    private List<PostResult> Posts = new List<PostResult>();
+    private bool synchronized = false;
+    //private BlazorBloggerApiService bloggerService = BlazorBloggerApiService.GetInstance("AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+
+    public async Task GetServerResponse()
+    {
+        //var random = await bloggerService.GetPostListAsync(model, "865396414271301773");
+        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+        Posts.AddRange(resp.items);
+        synchronized = true;
+
+        //var random = await httpClient.GetJsonAsync<BlazorBloggerApi3.Models.Result.PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+
+
+        //var resp = await httpClient.GetAsync("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+        //var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+        //var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<BlazorBloggerApi3.Models.Result.PostListResult>(RandomPost);
+        //var deserialized = System.Text.Json.JsonConvert()
+        //RandomPost = resp.items[1].content;
+    }
+}

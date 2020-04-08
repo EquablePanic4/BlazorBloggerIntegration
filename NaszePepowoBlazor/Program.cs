@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using BlazorBloggerApi3.Services;
 
 namespace NaszePepowoBlazor
 {
@@ -15,6 +16,7 @@ namespace NaszePepowoBlazor
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+            //builder.Services.AddSingleton<BlazorBloggerApiService>();
 
             await builder.Build().RunAsync();
         }
