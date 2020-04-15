@@ -1,0 +1,30 @@
+﻿@namespace NaszePepowoBlazor.Shared.Components
+
+<!--Artykuł begin-->
+<div class="row" style="text-align: center;">
+    <div class="col-lg-10 col-xl-10 offset-lg-1 offset-xl-1">
+        <div class="intro">
+            <h1 class="text-center">@PostTitle</h1>
+            <p class="text-center"><span class="by">opublikowane przez:</span> <a>@AuthorName</a><span class="date">@PublishDate</span></p>
+            <!--<img class="img-fluid" src="assets/img/accounting-analytics-balance-black-and-white-209224.jpg" alt="Sprawozdanie" loading="lazy">-->
+        </div>
+        <div class="text">
+            @ChildContent
+        </div>
+    </div>
+</div>
+<!--Artykuł end-->
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string PostTitle { get; set; }
+
+    [Parameter]
+    public string AuthorName { get; set; }
+
+    [Parameter]
+    public DateTime PublishDate { get; set; }
+}

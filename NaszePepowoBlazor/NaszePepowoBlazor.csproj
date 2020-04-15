@@ -12,8 +12,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Codli Libaries\BlazorBloggerApi3\BlazorBloggerApi3\BlazorBloggerApi3.csproj" />
-  </ItemGroup>
 </Project>

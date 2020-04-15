@@ -1,11 +1,45 @@
 ﻿@inherits LayoutComponentBase
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+<nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Nasze Pępowo</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Aktualności</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="">KGW Pępowo</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="contact.html">Kontakt</a></li>
+                <li class="nav-item" role="presentation"></li>
+            </ul>
+        </div>
     </div>
-
-    <div class="content px-4">
+</nav>
+<header class="masthead" id="codli-header" style="background-image: url(&quot;assets/img/index-bg.jpg&quot;);">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <div class="site-heading">
+                    <h1>Aktualności</h1><span class="subheading">Strona poświęcona aktualnością z sołectwa Pępowo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="article-clean">
+    <div class="container" id="index-container">
         @Body
     </div>
 </div>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto">
+                <ul class="list-inline text-center">
+                    <li class="list-inline-item"></li>
+                    <li class="list-inline-item"><span data-aos="fade-up" class="fa-stack fa-lg" onclick="NavigateToFacebook();" style="cursor: pointer;"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse" onclick="NavigateToFacebook();"></i></span></li>
+                    <li class="list-inline-item"></li>
+                </ul>
+                <p class="text-muted invisible copyright">Copyright&nbsp;©&nbsp;Dynamic Event 2020</p>
+            </div>
+        </div>
+    </div>
+</footer>

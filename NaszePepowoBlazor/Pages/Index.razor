@@ -1,47 +1,40 @@
-﻿@using BlazorBloggerApi3.Models.Result
-@using BlazorBloggerApi3.Models.Request
-@using BlazorBloggerApi3.Services
+﻿@using NaszePepowoBlazor.Models.Result
+@using NaszePepowoBlazor.Shared.Components
+@using NaszePepowoBlazor.Statics
 @inject HttpClient httpClient
+@inject ActivePage activePage
 @page "/"
 
-<button @onclick="GetServerResponse">Działaj!</button>
-<h1>Poniżej pojawi się status naciśnięciu przycisku</h1>
-
-<h4>Status synchronizacji: @synchronized</h4>
-@if (synchronized)
+@if (activePage.IsEnabled(ActivePage.AppPage.Index))
 {
-    foreach (var post in Posts)
-    {
-        <hr />
-        <h1>@post.title</h1>
-        <p>
-            @if (post.content.Contains("<img")) 
-            @((MarkupString) post.content)
-        </p>
-    }
+    <IndexComponent @ref="indexComponent" />
 }
 
+@if (activePage.IsEnabled(ActivePage.AppPage.KGW))
+{
+    <KgwComponent @ref="kgwComponent" />
+}
 
+@if (activePage.IsEnabled(ActivePage.AppPage.About))
+{
+    <AboutComponent />
+}
 
 @code {
-    private List<PostResult> Posts = new List<PostResult>();
-    private bool synchronized = false;
-    //private BlazorBloggerApiService bloggerService = BlazorBloggerApiService.GetInstance("AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
+    private IndexComponent indexComponent;
+    private KgwComponent kgwComponent;
 
-    public async Task GetServerResponse()
+    protected override async Task OnInitializedAsync()
     {
-        //var random = await bloggerService.GetPostListAsync(model, "865396414271301773");
-        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
-        Posts.AddRange(resp.items);
-        synchronized = true;
+        //To jest akcja którą uruchamiamy w oczekiwaniu na załadowanie się strony - pobieramy 500 postów
+        //activePage.OnSyncStateEvent += ChangeSyncState;
+        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=50");
+        activePage.Posts = resp.items;
+        activePage.Synchronized = true;
+    }
 
-        //var random = await httpClient.GetJsonAsync<BlazorBloggerApi3.Models.Result.PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
-
-
-        //var resp = await httpClient.GetAsync("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
-        //var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/865396414271301773/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4");
-        //var deserialized = Newtonsoft.Json.JsonConvert.DeserializeObject<BlazorBloggerApi3.Models.Result.PostListResult>(RandomPost);
-        //var deserialized = System.Text.Json.JsonConvert()
-        //RandomPost = resp.items[1].content;
+    public void ChangeSyncState()
+    { 
+        indexComponent.SyncState = true;
     }
 }

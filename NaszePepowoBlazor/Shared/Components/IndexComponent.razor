@@ -1,0 +1,36 @@
+﻿@namespace NaszePepowoBlazor.Shared.Components
+@using NaszePepowoBlazor.Statics
+@using Models.Result
+@inject ActivePage activePage
+
+    @foreach (var post in activePage.Posts.Skip(pageNumber * 10).Take(10).ToList())
+    {
+        <PostComponent AuthorName="@post.author.displayName" PostTitle="@post.title" PublishDate="@post.published">
+            @((MarkupString)post.content)
+        </PostComponent>
+    }
+
+@if (activePage.Posts.Count == 0)
+{
+    <h6>Czekaj gnoju</h6>
+}
+
+@code {
+    private int pageNumber = 0;
+    public bool SyncState { get; set; } = false;
+    private List<PostResult> posts = new List<PostResult>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        activePage.OnSyncStateEvent += OnNotify;
+    }
+
+    public async void OnNotify()
+    {
+        posts = activePage.Posts.Where(w => !w.labels?.Contains("kgw") ?? true).Skip(pageNumber * 10).Take(10).ToList();
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+}

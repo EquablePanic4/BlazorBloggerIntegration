@@ -84,8 +84,6 @@ D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\zh-Hant\Microsoft.TestPlatform.CommunicationUtilities.resources.dll
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\zh-Hant\Microsoft.TestPlatform.CrossPlatEngine.resources.dll
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
-D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\BlazorBloggerApi3.dll
-D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\BlazorBloggerApi3.pdb
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.csprojAssemblyReference.cache
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.AssemblyInfoInputs.cache
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.AssemblyInfo.cs
@@ -94,3 +92,5 @@ D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.dll
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.pdb
 D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\obj\Debug\net5.0\UnitTestProject1.genruntimeconfig.cache
+D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\NetBloggerApi3.dll
+D:\Blazor\NaszePepowoBlazor\BlazorBloggerIntegration\UnitTestProject1\bin\Debug\net5.0\NetBloggerApi3.pdb
