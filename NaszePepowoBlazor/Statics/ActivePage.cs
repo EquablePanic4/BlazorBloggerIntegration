@@ -10,12 +10,30 @@ namespace NaszePepowoBlazor.Statics
     {
         public ActivePage()
         {
+            _pageNumber = 0;
             CurrentPage = AppPage.Index;
             _synchronized = false;
             _posts = new List<PostResult>();
         }
 
         public AppPage CurrentPage;
+
+        public int CurrentPagePostsNumber
+        {
+            get
+            {
+                return CurrentPagePosts.Count;
+            }
+        }
+
+        private int _pageNumber;
+        public int CurrentPageNumber
+        {
+            get
+            {
+                return _pageNumber;
+            }
+        }
 
         private bool _synchronized;
         public bool Synchronized
@@ -29,6 +47,19 @@ namespace NaszePepowoBlazor.Statics
             {
                 if (value)
                     _synchronized = true;
+            }
+        }
+
+        public List<PostResult> CurrentPagePosts
+        {
+            get
+            {
+                return CurrentPage switch
+                {
+                    AppPage.Index => IndexPosts,
+                    AppPage.KGW => KgwPosts,
+                    _ => null
+                };
             }
         }
 
@@ -47,6 +78,30 @@ namespace NaszePepowoBlazor.Statics
             }
         }
 
+        public List<PostResult> IndexPosts
+        {
+            get
+            {
+                return _posts;
+            }
+        }
+
+        public List<PostResult> KgwPosts
+        {
+            get
+            {
+                return _posts.Where(w => w.labels?.Contains("kgw") ?? true || w.labels.Contains("*")).ToList();
+            }
+        }
+
+        public List<PostResult> AlertPosts
+        {
+            get
+            {
+                return _posts.Where(w => w.labels != null).Where(w => w.labels.Contains("ogłoszenie")).ToList();
+            }
+        }
+
         public bool IsEnabled(AppPage page) => page == CurrentPage;
 
         public enum AppPage
@@ -57,5 +112,19 @@ namespace NaszePepowoBlazor.Statics
         }
 
         public event Action OnSyncStateEvent;
+
+        public event Action OnPageChangeEvent;
+
+        public event Action OnPaginationRefreshAsk;
+
+        public event Action<int> OnPageNavigation;
+
+        public void NavigateToPage(int pageNumber)
+        {
+            Console.WriteLine($"Żądanie przeniesienia na stronę {pageNumber}");
+            _pageNumber = pageNumber;
+            OnPageNavigation?.Invoke(pageNumber);
+            OnPaginationRefreshAsk?.Invoke();
+        }
     }
 }

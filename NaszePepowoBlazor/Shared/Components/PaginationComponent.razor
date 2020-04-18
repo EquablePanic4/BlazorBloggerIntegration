@@ -1,0 +1,60 @@
+﻿@namespace NaszePepowoBlazor.Shared.Components
+@using NaszePepowoBlazor.Statics
+@inject ActivePage activePage
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @foreach (var paginationElement in paginationNumbers)
+        {
+            if (paginationElement != pageNumber + 1)
+            {
+                <li class="page-item active"><a class="page-link" href="" @onclick="(() => activePage.NavigateToPage(paginationElement - 1))">@paginationElement</a></li>
+            }
+
+            else
+            {
+                <li class="page-item"><a class="page-link" href="">@paginationElement</a></li>
+            }
+        }
+    </ul>
+</nav>
+
+@code {
+    private int pageNumber = 0;
+    private int postNumber = 0;
+    private List<int> paginationNumbers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Inicjalizacja obiektów
+        paginationNumbers = new List<int>();
+
+        //Domyślnie tutaj dodajemy event listnera
+        postNumber = activePage.CurrentPagePostsNumber;
+
+        //Dodajemy delegaty
+        activePage.OnSyncStateEvent += RefreshPaginator;
+        activePage.OnPaginationRefreshAsk += RefreshPaginator;
+
+        CreatePaginationTable();
+    }
+
+    private void CreatePaginationTable()
+    {
+        paginationNumbers = Libaries.PaginationAlghorithm.GetPaginationList(pageNumber + 1, postNumber / 10 + 1);
+        Console.WriteLine("Tablica paginacji odświeżona!");
+        foreach(var p in paginationNumbers)
+            Console.WriteLine("Element paginacji: " + p);
+    }
+
+    public async void RefreshPaginator()
+    {
+        postNumber = activePage.CurrentPagePostsNumber;
+        pageNumber = activePage.CurrentPageNumber;
+        CreatePaginationTable();
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+}

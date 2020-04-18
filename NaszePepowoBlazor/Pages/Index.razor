@@ -20,7 +20,11 @@
     <AboutComponent />
 }
 
+<PaginationComponent />
+
 @code {
+    //MAKSYMALNA OBSŁUGIWANA LICZBA POSTÓW PRZEZ APLIKACJĘ TO 500!
+
     private IndexComponent indexComponent;
     private KgwComponent kgwComponent;
 
@@ -28,13 +32,17 @@
     {
         //To jest akcja którą uruchamiamy w oczekiwaniu na załadowanie się strony - pobieramy 500 postów
         //activePage.OnSyncStateEvent += ChangeSyncState;
-        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=50");
+        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=10");
         activePage.Posts = resp.items;
         activePage.Synchronized = true;
+        Console.WriteLine("Pobrano pierwszą część postów");
+        var respFull = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=500");
+        activePage.Posts = respFull.items;
+        Console.WriteLine("Pobrano wszystkie posty");
     }
 
     public void ChangeSyncState()
-    { 
+    {
         indexComponent.SyncState = true;
     }
 }

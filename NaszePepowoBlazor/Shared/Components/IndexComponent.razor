@@ -3,7 +3,7 @@
 @using Models.Result
 @inject ActivePage activePage
 
-    @foreach (var post in activePage.Posts.Skip(pageNumber * 10).Take(10).ToList())
+    @foreach (var post in posts.Skip(pageNumber * 10).Take(10))
     {
         <PostComponent AuthorName="@post.author.displayName" PostTitle="@post.title" PublishDate="@post.published">
             @((MarkupString)post.content)
@@ -18,16 +18,28 @@
 @code {
     private int pageNumber = 0;
     public bool SyncState { get; set; } = false;
-    private List<PostResult> posts = new List<PostResult>();
+    private IEnumerable<PostResult> posts = new List<PostResult>();
 
     protected override async Task OnInitializedAsync()
     {
+        posts = activePage.CurrentPagePosts.Take(10);
         activePage.OnSyncStateEvent += OnNotify;
+        activePage.OnPageNavigation += NavigateTo;
     }
 
     public async void OnNotify()
     {
         posts = activePage.Posts.Where(w => !w.labels?.Contains("kgw") ?? true).Skip(pageNumber * 10).Take(10).ToList();
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public async void NavigateTo(int pageNumber)
+    {
+        Console.WriteLine("Komponent index otrzymał delegata o przeniesieniu się na stronę: " + pageNumber);
+        posts = activePage.IndexPosts.Skip(pageNumber * 10).Take(10).ToList();
         await InvokeAsync(() =>
         {
             StateHasChanged();
