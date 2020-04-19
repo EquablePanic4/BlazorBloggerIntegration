@@ -1,4 +1,5 @@
-﻿using NaszePepowoBlazor.Models.Result;
+﻿using NaszePepowoBlazor.Extensions;
+using NaszePepowoBlazor.Models.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,8 +74,11 @@ namespace NaszePepowoBlazor.Statics
 
             set
             {
-                _posts.AddRange(value);
-                OnSyncStateEvent?.Invoke();
+                if (!value.IsNullOrEmpty())
+                {
+                    _posts.AddRange(value);
+                    OnSyncStateEvent?.Invoke();
+                }
             }
         }
 
@@ -100,6 +104,13 @@ namespace NaszePepowoBlazor.Statics
             {
                 return _posts.Where(w => w.labels != null).Where(w => w.labels.Contains("ogłoszenie")).ToList();
             }
+        }
+
+        public void NavigateToAppPage(AppPage navigateTo)
+        {
+            //Zmieniamy obecną stronę
+            CurrentPage = navigateTo;
+            OnPageChangeEvent?.Invoke();
         }
 
         public bool IsEnabled(AppPage page) => page == CurrentPage;

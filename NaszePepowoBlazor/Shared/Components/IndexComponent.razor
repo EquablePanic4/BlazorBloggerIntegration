@@ -3,17 +3,21 @@
 @using Models.Result
 @inject ActivePage activePage
 
-    @foreach (var post in posts.Skip(pageNumber * 10).Take(10))
-    {
-        <PostComponent AuthorName="@post.author.displayName" PostTitle="@post.title" PublishDate="@post.published">
-            @((MarkupString)post.content)
-        </PostComponent>
-    }
+<div class="article-clean">
+    <div class="container" id="index-container">
+        @foreach (var post in posts.Skip(pageNumber * 10).Take(10))
+        {
+            <PostComponent AuthorName="@post.author.displayName" PostTitle="@post.title" PublishDate="@post.published">
+                @((MarkupString)post.content)
+            </PostComponent>
+        }
 
-@if (activePage.Posts.Count == 0)
-{
-    <h6>Czekaj gnoju</h6>
-}
+        @if (activePage.Posts.Count == 0)
+        {
+            <center><h6>Proszę czekać, trwa ładowanie postów...</h6></center>
+        }
+    </div>
+</div>>
 
 @code {
     private int pageNumber = 0;
@@ -29,7 +33,7 @@
 
     public async void OnNotify()
     {
-        posts = activePage.Posts.Where(w => !w.labels?.Contains("kgw") ?? true).Skip(pageNumber * 10).Take(10).ToList();
+        posts = activePage.IndexPosts.Take(10);
         await InvokeAsync(() =>
         {
             StateHasChanged();

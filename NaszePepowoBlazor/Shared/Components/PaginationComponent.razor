@@ -1,23 +1,33 @@
 ﻿@namespace NaszePepowoBlazor.Shared.Components
 @using NaszePepowoBlazor.Statics
 @inject ActivePage activePage
+<style>
+    #codli-page-navigator {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 30px;
+    }
+</style>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        @foreach (var paginationElement in paginationNumbers)
-        {
-            if (paginationElement != pageNumber + 1)
-            {
-                <li class="page-item active"><a class="page-link" href="" @onclick="(() => activePage.NavigateToPage(paginationElement - 1))">@paginationElement</a></li>
-            }
+    <div id="codli-page-navigator">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                @foreach (var paginationElement in paginationNumbers)
+                {
+                    if (paginationElement != pageNumber + 1)
+                    {
+                        <li class="page-item active"><a class="page-link" href="" @onclick="(() => activePage.NavigateToPage(paginationElement - 1))">@paginationElement</a></li>
+                    }
 
-            else
-            {
-                <li class="page-item"><a class="page-link" href="">@paginationElement</a></li>
-            }
-        }
-    </ul>
-</nav>
+                    else
+                    {
+                        <li class="page-item"><a class="page-link" href="">@paginationElement</a></li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
 
 @code {
     private int pageNumber = 0;

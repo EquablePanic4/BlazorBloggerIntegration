@@ -3,46 +3,70 @@
 @using NaszePepowoBlazor.Statics
 @inject HttpClient httpClient
 @inject ActivePage activePage
+@inject IJSRuntime js
 @page "/"
 
 @if (activePage.IsEnabled(ActivePage.AppPage.Index))
 {
+    //Strona z aktualnościami
     <IndexComponent @ref="indexComponent" />
 }
 
 @if (activePage.IsEnabled(ActivePage.AppPage.KGW))
 {
+    //Strona KGW
     <KgwComponent @ref="kgwComponent" />
 }
 
 @if (activePage.IsEnabled(ActivePage.AppPage.About))
 {
-    <AboutComponent />
+    //Strona kontaktowa
+    <AboutComponent @ref="aboutComponent" />
 }
 
-<PaginationComponent />
+@if (activePage.IsEnabled(ActivePage.AppPage.Index) || activePage.IsEnabled(ActivePage.AppPage.KGW))
+{
+    //Element paginacji
+    <PaginationComponent />
+}
 
 @code {
-    //MAKSYMALNA OBSŁUGIWANA LICZBA POSTÓW PRZEZ APLIKACJĘ TO 500!
+        //MAKSYMALNA OBSŁUGIWANA LICZBA POSTÓW PRZEZ APLIKACJĘ TO 500!
 
     private IndexComponent indexComponent;
     private KgwComponent kgwComponent;
+    private AboutComponent aboutComponent;
 
     protected override async Task OnInitializedAsync()
     {
-        //To jest akcja którą uruchamiamy w oczekiwaniu na załadowanie się strony - pobieramy 500 postów
-        //activePage.OnSyncStateEvent += ChangeSyncState;
-        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=10");
+        //To jest akcja którą uruchamiamy w oczekiwaniu na załadowanie się strony - pobieramy 20 postów
+        var resp = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/7027437029431274686/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=20");
         activePage.Posts = resp.items;
         activePage.Synchronized = true;
-        Console.WriteLine("Pobrano pierwszą część postów");
-        var respFull = await httpClient.GetJsonAsync<PostListResult>("https://www.googleapis.com/blogger/v3/blogs/6329595/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=500");
-        activePage.Posts = respFull.items;
-        Console.WriteLine("Pobrano wszystkie posty");
+
+        //Następnie dodajemy Event Listnera dla zmiany strony
+        activePage.OnPageChangeEvent += SwitchPage;
+
+        //Teraz asynchronicznie pobieramy resztę postów - chyba że ich nie ma
+        Console.WriteLine($"Token następnej strony: {resp.nextPageToken}");
+        if (!String.IsNullOrEmpty(resp.nextPageToken)) //W przeciwnym wypadku nie ma następnej strony
+        {
+            var respFull = await httpClient.GetJsonAsync<PostListResult>($"https://www.googleapis.com/blogger/v3/blogs/7027437029431274686/posts?key=AIzaSyACJeX9O_f6P38B1OSZRNrKyAAeOblb3q4&maxResults=500");
+            activePage.Posts = respFull.items.Skip(20).ToList();
+        }
     }
 
     public void ChangeSyncState()
     {
         indexComponent.SyncState = true;
+    }
+
+    public async void SwitchPage()
+    {
+        //W pierwszej kolejności zmieniamy aktywną stronę... czyli po prostu odświeżamy stan
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
     }
 }
