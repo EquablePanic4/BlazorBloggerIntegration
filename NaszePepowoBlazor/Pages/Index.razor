@@ -6,6 +6,8 @@
 @inject IJSRuntime js
 @page "/"
 
+
+
 @if (activePage.IsEnabled(ActivePage.AppPage.Index))
 {
     //Strona z aktualnościami
@@ -63,7 +65,10 @@
 
     public async void SwitchPage()
     {
-        //W pierwszej kolejności zmieniamy aktywną stronę... czyli po prostu odświeżamy stan
+        //Napoczątku wykonujemy skrypt JS
+        await js.InvokeVoidAsync("SwitchPageJs", activePage.CurrentPage.ToString());
+
+        //Teraz zmieniamy aktywną stronę... czyli po prostu odświeżamy stan
         await InvokeAsync(() =>
         {
             StateHasChanged();

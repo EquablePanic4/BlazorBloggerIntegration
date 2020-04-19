@@ -12,9 +12,14 @@
             </PostComponent>
         }
 
-        @if (activePage.Posts.Count == 0)
+        @if (posts.Count == 0 && !activePage.Synchronized)
         {
             <center><h6>Proszę czekać, trwa ładowanie postów...</h6></center>
+        }
+
+        @if (posts.Count == 0 && activePage.Synchronized)
+        {
+            <center><h3>Ta strona jeszcze nie posiada żadnych artykułów</h3></center>
         }
     </div>
 </div>>
@@ -22,18 +27,19 @@
 @code {
     private int pageNumber = 0;
     public bool SyncState { get; set; } = false;
-    private IEnumerable<PostResult> posts = new List<PostResult>();
+    private List<PostResult> posts = new List<PostResult>();
+    private List<PostResult> alerts = new List<PostResult>();
 
     protected override async Task OnInitializedAsync()
     {
-        posts = activePage.CurrentPagePosts.Take(10);
+        posts = activePage.CurrentPagePosts.Take(10).ToList();
         activePage.OnSyncStateEvent += OnNotify;
         activePage.OnPageNavigation += NavigateTo;
     }
 
     public async void OnNotify()
     {
-        posts = activePage.IndexPosts.Take(10);
+        posts = activePage.IndexPosts.Take(10).ToList();
         await InvokeAsync(() =>
         {
             StateHasChanged();

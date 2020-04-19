@@ -1,57 +1,97 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
+@using System.Text
 @using NaszePepowoBlazor.Statics
 @inject ActivePage activePage
 <nav class="navbar navbar-light navbar-expand-lg fixed-top" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">Nasze Pępowo</a>
-        <button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" @onclick="(() => activePage.NavigateToAppPage(ActivePage.AppPage.Index))" href="">Aktualności</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" @onclick="(() => activePage.NavigateToAppPage(ActivePage.AppPage.KGW))" href="">KGW Pępowo</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" @onclick="(() => activePage.NavigateToAppPage(ActivePage.AppPage.About))" href="">Kontakt</a>
-                </li>
-                <li class="nav-item" role="presentation"></li>
-            </ul>
-        </div>
-    </div>
+	<div class="container">
+		<a class="navbar-brand" href="index.html">Nasze Pępowo</a>
+		<button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="nav navbar-nav ml-auto">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" @onclick='(() => OnAppPageNavigation("index"))' href="">Aktualności</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" @onclick='(() => OnAppPageNavigation("kgw"))' href="">KGW Pępowo</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" @onclick='(() => OnAppPageNavigation("about"))' href="">Kontakt</a>
+				</li>
+				<li class="nav-item" role="presentation"></li>
+			</ul>
+		</div>
+	</div>
 </nav>
-<header class="masthead" id="codli-header" style="background-image: url(&quot;assets/img/index-bg.jpg&quot;);">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-lg-8 mx-auto">
-                <div class="site-heading">
-                    <h1>Aktualności</h1>
-                    <span class="subheading">Strona poświęcona aktualnością z sołectwa Pępowo</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<header class="masthead" id="codli-header" style="background-image: url(assets/img/@backgroundUrl);">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-lg-8 mx-auto">
+				<div class="site-heading">
+                    <h1>
+                        @((MarkupString)pageTitle)
+                        
+                    </h1>
+					<span class="subheading">@pageDescription</span>
+				</div>
+			</div>
+		</div>
+	</div>
 </header>
 @Body
 <footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-lg-8 mx-auto">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item"></li>
-                    <li class="list-inline-item">
-                        <span data-aos="fade-up" class="fa-stack fa-lg" onclick="NavigateToFacebook();" style="cursor: pointer;"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse" onclick="NavigateToFacebook();"></i></span>
-                    </li>
-                    <li class="list-inline-item"></li>
-                </ul>
-                <p class="text-muted invisible copyright">Copyright&nbsp;©&nbsp;Dynamic Event 2020</p>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-10 col-lg-8 mx-auto">
+				<ul class="list-inline text-center">
+					<li class="list-inline-item"></li>
+					<li class="list-inline-item">
+						<span data-aos="fade-up" class="fa-stack fa-lg" onclick="NavigateToFacebook();" style="cursor: pointer;"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-facebook fa-stack-1x fa-inverse" onclick="NavigateToFacebook();"></i></span>
+					</li>
+					<li class="list-inline-item"></li>
+				</ul>
+				<p class="text-muted invisible copyright">Copyright&nbsp;©&nbsp;Dynamic Event 2020</p>
+			</div>
+		</div>
+	</div>
 </footer>
 
 @code {
 
+	private string backgroundUrl = "index-bg.jpg";
+	private string pageTitle = "Aktualności";
+	private string pageDescription = "Strona poświęcona aktualnościom z sołectwa Pępowo";
+
+	protected override async Task OnInitializedAsync()
+	{
+
+	}
+
+	public async void OnAppPageNavigation(string destination)
+	{
+		switch (destination)
+		{
+			case "index":
+				backgroundUrl = "index-bg.jpg";
+				pageTitle = "Aktualności";
+				pageDescription = "Strona poświęcona aktualnościom z sołectwa Pępowo";
+				activePage.NavigateToAppPage(ActivePage.AppPage.Index);
+				break;
+
+			case "kgw":
+				backgroundUrl = "kgw1.jpeg";
+				pageTitle = "KGW Pępowo";
+				pageDescription = "Aktualności dotyczące koła gospodyń wiejskich z Pępowa";
+				activePage.NavigateToAppPage(ActivePage.AppPage.KGW);
+				break;
+
+			case "about":
+				backgroundUrl = "contact-bg.jpg";
+				pageTitle = "Skontaktuj się";
+				pageDescription = "Jeśeli chciałbyś zasięgnąć u nas informacji, skontaktuj się z nami";
+				activePage.NavigateToAppPage(ActivePage.AppPage.About);
+				break;
+
+		}
+	}
 }
