@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,9 +9,6 @@ namespace NaszePepowoBlazor.Libaries
     {
         public static List<int> GetPaginationList(int current, int last)
         {
-            Console.WriteLine($"Obecna paginacji: {current}");
-            Console.WriteLine($"Ostatnia paginacji: {last}");
-
             //Chcemy mieć 7 elementów maksymalnie <-- 3 w tył [obecna] 3 w przód -->
             var lista = new HashSet<int>();
 

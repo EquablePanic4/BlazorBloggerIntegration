@@ -1,30 +1,51 @@
-﻿<div class="row">
-    <div class="col">
-        <h3 class="text-center">Ogłoszenia</h3>
-        <div class="card-group">
+﻿@using NaszePepowoBlazor.Models.Result
+@using NaszePepowoBlazor.Statics
+@inject ActivePage activePage
 
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="text-center card-title">Harmonogram wywozu śmieci w gminie</h5><button class="btn btn-primary text-center" type="button" data-toggle="modal" data-target="#modalFirst">Wyświetl</button>
-                </div>
+@if (alerts.Count > 0)
+{
+    <div class="row">
+        <div class="col">
+            <h3 class="text-center">Ogłoszenia</h3>
+            <div class="card-group">
+
+                @for (var i = 0; i < alerts.Count; i++)
+                {
+                    var alert = alerts[i];
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="text-center card-title">@alerts[i].title</h5><button class="btn btn-primary text-center" type="button" data-toggle="modal" data-target="#@ids[i]">Wyświetl</button>
+                        </div>
+                    </div>
+
+                    <ModalComponent Post="@alerts[i]" ElementID="@ids[i]" />
+                }
+
             </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="text-center card-title">Title</h5>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="text-center card-title">Title</h5>
-                </div>
-            </div>
-
         </div>
     </div>
-</div>
+}
 
 @code {
+    private List<PostResult> alerts;
 
+    private string[] ids = new string[] { "codliFirstModal", "codliSecondModal", "codliThirdModal" };
+
+    protected override async Task OnInitializedAsync()
+    {
+        alerts = new List<PostResult>();
+        activePage.OnSyncStateEvent += OnSync;
+
+        alerts = activePage.AlertPosts;
+    }
+
+    public async void OnSync()
+    {
+        alerts = activePage.AlertPosts;
+
+        await InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
 }

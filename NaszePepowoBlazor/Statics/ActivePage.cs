@@ -1,9 +1,8 @@
-﻿using NaszePepowoBlazor.Extensions;
+using NaszePepowoBlazor.Extensions;
 using NaszePepowoBlazor.Models.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace NaszePepowoBlazor.Statics
 {
@@ -86,7 +85,8 @@ namespace NaszePepowoBlazor.Statics
         {
             get
             {
-                return _posts;
+                //Bierzemy posty które nie mają etykiet
+                return _posts.Where(w => w.labels.IsNullOrEmpty() ? true : (w.labels.Contains("ogłoszenie") || w.labels.Contains("aktualności"))).ToList();
             }
         }
 
@@ -94,7 +94,7 @@ namespace NaszePepowoBlazor.Statics
         {
             get
             {
-                return _posts.Where(w => w.labels?.Contains("kgw") ?? true || w.labels.Contains("*")).ToList();
+                return _posts.Where(w => w.labels.IsNullOrEmpty() ? false : w.labels.Contains("kgw")).ToList();
             }
         }
 
@@ -102,7 +102,7 @@ namespace NaszePepowoBlazor.Statics
         {
             get
             {
-                return _posts.Where(w => w.labels != null).Where(w => w.labels.Contains("ogłoszenie")).ToList();
+                return _posts.Where(w => w.labels != null).Where(w => w.labels.Contains("ogłoszenie")).Take(3).ToList();
             }
         }
 
@@ -132,7 +132,6 @@ namespace NaszePepowoBlazor.Statics
 
         public void NavigateToPage(int pageNumber)
         {
-            Console.WriteLine($"Żądanie przeniesienia na stronę {pageNumber}");
             _pageNumber = pageNumber;
             OnPageNavigation?.Invoke(pageNumber);
             OnPaginationRefreshAsk?.Invoke();

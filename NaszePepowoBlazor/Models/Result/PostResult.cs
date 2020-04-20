@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
 
 namespace NaszePepowoBlazor.Models.Result
 {
@@ -8,17 +9,17 @@ namespace NaszePepowoBlazor.Models.Result
         /// <summary>
         /// The kind of this entity. Always blogger#post.
         /// </summary>
-        public string kind { get; set; }
+        //public string kind { get; set; }
 
         /// <summary>
         /// The ID of this post.
         /// </summary>
-        public string id { get; set; }
+        //public string id { get; set; }
 
         /// <summary>
         /// Data about the blog containing this post.
         /// </summary>
-        public BlogResult blog { get; set; }
+        //public BlogResult blog { get; set; }
 
         /// <summary>
         /// date-time when this post was published.
@@ -33,12 +34,12 @@ namespace NaszePepowoBlazor.Models.Result
         /// <summary>
         /// The URL where this post is displayed.
         /// </summary>
-        public string url { get; set; }
+        //public string url { get; set; }
 
         /// <summary>
         /// The Blogger API URL to fetch this resource from.
         /// </summary>
-        public string selfLink { get; set; }
+        //public string selfLink { get; set; }
 
         /// <summary>
         /// The title of the post.
@@ -63,12 +64,12 @@ namespace NaszePepowoBlazor.Models.Result
         /// <summary>
         /// The list of labels this post was tagged with.
         /// </summary>
-        public string[] labels { get; set; }
+        public List<string> labels { get; set; }
 
         /// <summary>
         /// The JSON metadata for the post.
         /// </summary>
-        public string customMetaData { get; set; }
+        //public string customMetaData { get; set; }
 
         /// <summary>
         /// The location, if this post is geotagged.
@@ -78,16 +79,16 @@ namespace NaszePepowoBlazor.Models.Result
         /// <summary>
         /// The title link URL, similar to atom's related link.
         /// </summary>
-        public string titleLink { get; set; }
+        //public string titleLink { get; set; }
 
         /// <summary>
         /// Display image for the Post.
         /// </summary>
-        public ImageResult[] images { get; set; }
+        //public ImageResult[] images { get; set; }
 
         /// <summary>
         /// Status of the post. Only set for admin-level requests
         /// </summary>
-        public string status { get; set; }
+        //public string status { get; set; }
     }
 }

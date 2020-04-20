@@ -1,4 +1,4 @@
-﻿namespace NaszePepowoBlazor.Models.Result
+namespace NaszePepowoBlazor.Models.Result
 {
     public class AuthorResult
     {
@@ -10,7 +10,20 @@
         /// <summary>
         /// The post creator's display name.
         /// </summary>
-        public string displayName { get; set; }
+        /// 
+        private string _displayName;
+        public string displayName
+        {
+            get
+            {
+                return _displayName == "Codli" ? "Katarzyna Wierczyńska" : _displayName;
+            }
+
+            set
+            {
+                _displayName = value;
+            }
+        }
 
         /// <summary>
         /// The URL of the post creator's profile page.

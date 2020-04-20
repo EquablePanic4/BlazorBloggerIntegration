@@ -1,7 +1,7 @@
 ﻿@namespace NaszePepowoBlazor.Shared.Components
 @using NaszePepowoBlazor.Models.Result
 
-    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="@ElementID" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="text-align: center;">
@@ -21,4 +21,5 @@
 
 @code {
     [Parameter] public PostResult Post { get; set; }
+    [Parameter] public string ElementID { get; set; }
 }

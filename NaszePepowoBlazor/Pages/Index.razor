@@ -3,10 +3,7 @@
 @using NaszePepowoBlazor.Statics
 @inject HttpClient httpClient
 @inject ActivePage activePage
-@inject IJSRuntime js
 @page "/"
-
-
 
 @if (activePage.IsEnabled(ActivePage.AppPage.Index))
 {
@@ -58,16 +55,8 @@
         }
     }
 
-    public void ChangeSyncState()
-    {
-        indexComponent.SyncState = true;
-    }
-
     public async void SwitchPage()
     {
-        //Napoczątku wykonujemy skrypt JS
-        await js.InvokeVoidAsync("SwitchPageJs", activePage.CurrentPage.ToString());
-
         //Teraz zmieniamy aktywną stronę... czyli po prostu odświeżamy stan
         await InvokeAsync(() =>
         {
