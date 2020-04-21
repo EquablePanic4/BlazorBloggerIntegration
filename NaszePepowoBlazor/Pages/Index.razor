@@ -8,34 +8,29 @@
 @if (activePage.IsEnabled(ActivePage.AppPage.Index))
 {
     //Strona z aktualnościami
-    <IndexComponent @ref="indexComponent" />
+    <IndexComponent/>
 }
 
 @if (activePage.IsEnabled(ActivePage.AppPage.KGW))
 {
     //Strona KGW
-    <KgwComponent @ref="kgwComponent" />
+    <KgwComponent/>
 }
 
 @if (activePage.IsEnabled(ActivePage.AppPage.About))
 {
     //Strona kontaktowa
-    <AboutComponent @ref="aboutComponent" />
+    <AboutComponent/>
 }
 
 @if (activePage.IsEnabled(ActivePage.AppPage.Index) || activePage.IsEnabled(ActivePage.AppPage.KGW))
 {
     //Element paginacji
-    <PaginationComponent />
+    <PaginationComponent/>
 }
 
 @code {
-        //MAKSYMALNA OBSŁUGIWANA LICZBA POSTÓW PRZEZ APLIKACJĘ TO 500!
-
-    private IndexComponent indexComponent;
-    private KgwComponent kgwComponent;
-    private AboutComponent aboutComponent;
-
+    //MAKSYMALNA OBSŁUGIWANA LICZBA POSTÓW PRZEZ APLIKACJĘ TO 500!
     protected override async Task OnInitializedAsync()
     {
         //To jest akcja którą uruchamiamy w oczekiwaniu na załadowanie się strony - pobieramy 20 postów

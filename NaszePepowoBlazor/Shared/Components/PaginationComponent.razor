@@ -52,9 +52,6 @@
     private void CreatePaginationTable()
     {
         paginationNumbers = Libaries.PaginationAlghorithm.GetPaginationList(pageNumber + 1, postNumber / 10 + 1);
-        Console.WriteLine("Tablica paginacji odświeżona!");
-        foreach(var p in paginationNumbers)
-            Console.WriteLine("Element paginacji: " + p);
     }
 
     public async void RefreshPaginator()
